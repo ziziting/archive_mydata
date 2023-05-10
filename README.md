@@ -3,7 +3,7 @@
 
 修改数据信息
 
-alerts.py : 告警url
+alerts.py : 飞书告警机器人url
 
 const.py : 变量参数
 
