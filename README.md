@@ -3,9 +3,12 @@
 
 修改
 alerts.py : 告警url
+
 const.py : 变量参数
+
 increment.cfg : 设置增量定时归档规则
 
+---------------------------------
 执行：
 1\ mydumper导出整个表
 python3 archive_ctl.py all-file -h {host} -p {port} -D dba_crtdb_test -t account_history_1 -n 10000
