@@ -67,10 +67,3 @@ if  taskmode != "all-file" and taskmode != "del-data":
             cfg = args.cfg
 
 
-
-
-
-
-
-
-
