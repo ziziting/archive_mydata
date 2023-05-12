@@ -166,13 +166,19 @@ def criarchive(arhost, arport, row , cfg_file):
         ix_name = archive_cfg.get("ix_name")
         cdt_sql = archive_cfg.get("condition_sql")
         txn = int(row if archive_cfg.get("txn") == None else archive_cfg.get("txn"))
-
-        tb_name_list = tb_names.replace(' ', '').split(',')
-        for tb_name in tb_name_list:
-            log_file = f"{LOG_DIR}/{task_mode}_{daystr}_{db_name}_{tb_name}.log"
-            schefile = schemadump(source_host, source_port, db_name, tb_name, time_str, log_file, task_mode)
-            dataload(arhost, arport, ardbname, tb_name, schefile, log_file, task_mode)
-            pool.apply_async(ptarchive, (source_host, source_port, db_name, tb_name,  ix_name, ardbname,  cdt_sql, txn, arhost, arport, task_mode,log_file))
+        status = int(archive_cfg.get("status"))
+        if status == 1:
+            tb_name_list = tb_names.replace(' ', '').split(',')
+            for tb_name in tb_name_list:
+                log_file = f"{LOG_DIR}/{task_mode}_{daystr}_{db_name}_{tb_name}.log"
+                schefile = schemadump(source_host, source_port, db_name, tb_name, time_str, log_file, task_mode)
+                if os.path.isfile(schefile):
+                    dataload(arhost, arport, ardbname, tb_name, schefile, log_file, task_mode)
+                    pool.apply_async(ptarchive, (source_host, source_port, db_name, tb_name,  ix_name, ardbname,  cdt_sql, txn, arhost, arport, task_mode,log_file))
+                else:
+                    print(f"[SYNC][error] 归档失败，{source_host}:{source_port}/{db_name}.{tb_name} 不存在")
+                    recordinfo(log_file, f"[SYNC][error] 归档失败，{source_host}:{source_port}/{db_name}.{tb_name} 不存在")
+                    alerts.info(time_str, f"归档失败，{source_host}:{source_port}/{db_name}.{tb_name} 不存在")
     pool.close()
     pool.join()
 
