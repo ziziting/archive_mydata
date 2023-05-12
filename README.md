@@ -5,9 +5,13 @@
 
 alerts.py : 飞书告警机器人url
 
-const.py : 变量参数
+const.py : 变量参数，status=[1|0],1为开启归档任务
 
 increment.cfg : 设置增量定时归档规则
+
+archive_ctl.py : ptarchive()设置增量归档并发数，默认为5
+
+建议where的条件: create_time < DATE_SUB(DATE_FORMAT(now(),'%%Y-%%m-%%d 00:00:00'),interval 90 DAY)
 
 ---------------------------------
 执行：
