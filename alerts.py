@@ -47,7 +47,7 @@ def info(info,timestr):
           }
         }
     ## 替换为你的自定义机器人的webhook地址。
-    url = ""
+    url = "https://open.feishu.cn/open-apis/bot/v2/hook/dc0a1f1f-1b5d-4dc0-b284-943d2aa68455"
     return send_card(url, content)
 
 
